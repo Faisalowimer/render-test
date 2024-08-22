@@ -31,6 +31,7 @@ const requestLogger = (request, response, next) => {
 app.use(express.json())
 app.use(requestLogger)
 app.use(cors())
+app.use(express.static("dist"))
 
 const unknownEndPoint = (request, response) => {
     response.status(404).send({
@@ -67,7 +68,7 @@ const generateId = () => {
     const maxId = notes.length > 0
         ? Math.max(...notes.map(n => Number(n.id)))
         : 0 
-    return String(maxID + 1)
+    return String(maxId + 1)
 }
 
 app.post("/api/notes", (request, response) => {
@@ -93,7 +94,7 @@ app.post("/api/notes", (request, response) => {
 
 app.use(unknownEndPoint)
 
-const PORT = 3001
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 3000
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port http://localhost:${PORT}`)
 })
